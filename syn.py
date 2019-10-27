@@ -4,13 +4,16 @@ from nltk.corpus import wordnet as wn
 import json
 import urllib.request as urllib2
 import requests
+import string
+
+punct = string.punctuation
 
 def getSynonyms(wordBefore, word, wordAfter):
 	api_url = 'https://api.datamuse.com/words?ml='
 	api_url = api_url + word
-	if (wordBefore!="" and pos_tag([wordBefore])[0][1]!='.'):
+	if (wordBefore!="" and (wordBefore not in punct)):
 		api_url = api_url + '&lc=' + wordBefore
-	if (wordAfter!="" and pos_tag([wordAfter])[0][1]!='.'):
+	if (wordAfter!="" and (wordAfter not in punct)):
 		api_url = api_url + '&rc=' + wordAfter
 	api_url = api_url + '&max=5'
 	#print(api_url)
@@ -21,10 +24,10 @@ def getSynonyms(wordBefore, word, wordAfter):
 		wd = i['word']
 		if (pos_tag([wd])[0][1]==pos_tag([word])[0][1]):
 			trigram = []
-			if (wordBefore!="" and pos_tag([wordBefore])[0][1]!='.'):
+			if (wordBefore!="" and (wordBefore not in punct)):
 				trigram.append(wordBefore)# trigram = [trigram wordBefore]
 			trigram.append(wd)# trigram = [trigram wd]
-			if (wordAfter!="" and pos_tag([wordAfter])[0][1]!='.'):
+			if (wordAfter!="" and (wordAfter not in punct)):
 				trigram.append(wordAfter)# trigram = [trigram wordAfter]
 			f = phraseFreqFinder("%20".join(trigram))
 			if (f>10000):
@@ -74,6 +77,7 @@ for i in range(len(words)):
 		(wb,tb) = words[i-1]
 
 	(w,t) = words[i]
+	#print(words[i])
 
 	if (i==len(words)-1):
 		wa = ""
@@ -83,5 +87,6 @@ for i in range(len(words)):
 	if (paraphraseable(t)):
 		syns = getSynonyms(wb,w,wa)
 		syns.sort(reverse=True)
+		#print(syns)
 		if (len(syns)!=0):
 			print(w,[ x[1] for x in syns ])	
