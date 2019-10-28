@@ -7,6 +7,8 @@ import requests
 import string
 
 punct = string.punctuation
+iitbLingo = ['arbit','bandi','chamka','craxxxx','dac','dadda','ditch','dosa','enthu','farra','freshie','god','infi','insti','junta','liby','macha','matka','mug','paf']
+LingoMeans = ['arbitrary','girl','understand','achievement','Disciplinary Action Committee','Dual Degree Student','drop','Dean of Student Affairs','enthusiasm','FR','First Year Student','awesome','infinite','institute','people','library','rock','MTech Student','study','Performing Arts Festival']
 
 def getSynonyms(wordBefore, word, wordAfter):
 	api_url = 'https://api.datamuse.com/words?ml='
@@ -16,7 +18,7 @@ def getSynonyms(wordBefore, word, wordAfter):
 	if (wordAfter!="" and (wordAfter not in punct)):
 		api_url = api_url + '&rc=' + wordAfter
 	api_url = api_url + '&max=5'
-	#print(api_url)
+	print(api_url)
 	data = json.load(urllib2.urlopen(api_url))
 	data_format = json.dumps(data, indent=4, sort_keys=True)
 	res = []
@@ -40,7 +42,7 @@ def tag(sentence):
 	return words
 
 def paraphraseable(tag):
-	l = ['JJ','NN','NNS','NNP','NNPS','RB','VB','VBD','VBG','VBN','VBP','VBZ']
+	l = ['JJ','NN','NNS','NNPS','RB','VB','VBD','VBG','VBN','VBP','VBZ']
 	if tag in l:
 		return True
 	else:
@@ -54,7 +56,7 @@ def phraseFreqFinder(phrase):
 	# data = response.json()
 	# data_format = json.dumps(data, indent=4, sort_keys=True)
 	data = response.text
-	#print(data.split('\t'))
+	print(data.split('\t'))
 	try:
 		x = data.split('\t')[1]
 	# lines = data.split("\n")
@@ -77,7 +79,10 @@ for i in range(len(words)):
 		(wb,tb) = words[i-1]
 
 	(w,t) = words[i]
-	#print(words[i])
+	if w in iitbLingo:
+		print(w,[LingoMeans[iitbLingo.index(w)]])
+		continue
+		#print(words[i])
 
 	if (i==len(words)-1):
 		wa = ""
