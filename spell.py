@@ -7,7 +7,7 @@ from nltk.tag import pos_tag
 from nltk.corpus import wordnet as wn
 import json
 import urllib.request as urllib2
-# import requests
+import requests
 import string
 import re
 from collections import Counter
@@ -18,7 +18,7 @@ def conv(text): return re.findall(r'\w+', text.lower())
 
 WORDS = Counter(conv(open('big.txt').read()))
 
-uniq_words = set(open('dictionary.txt').read().split())
+# uniq_words = set(open('dictionary.txt').read().split())
 words=[i.lower() for i in words.words()]
 # words=[i.lower() for i in uniq_words]
 # print(words)
@@ -74,8 +74,14 @@ for i,j in inpwords:
 		# print(pot)
 		for j in pot:
 			if (j not in words) :
+				suggested_words=sorted(edit1(j),key=P,reverse=True)
 				print("misspelled word:",j)
-				print("suggestions:",sorted(edit1(j),key=P,reverse=True))
+				if(len(suggested_words)<=5):
+					print("sugestions:",suggested_words)
+				else:
+					print("suggestions:",suggested_words[:5])
+
+				# print("suggestions:",sorted(edit1(j),key=P,reverse=True))
 		pot=[]
 	else:
 		if(i.isalpha()):
