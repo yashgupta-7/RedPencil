@@ -17,7 +17,11 @@ def is_verb(word):
 			return True
 	return False
 def getSynonyms(wordBefore, word, wordAfter,t):
+	fl=0
+	if(word[0].isupper()):
+		fl=1
 	word=word.lower()
+	# print(word)
 	s="%20".join([wordBefore, word, wordAfter])
 	# print(s)
 	actFreq = phraseFreqFinder("%20".join([wordBefore, word, wordAfter]))
@@ -31,16 +35,16 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 	# print(t)
 	# print(word)
 	if("VB"  in t or "NN" in t):
-		data=data+lexeme(word)
-	if(is_verb(word)):
-		data=data+lexeme(word)
+		data=lexeme(word)
+	elif(is_verb(word)):
+		data=lexeme(word)
 		
+	elif(word in d2):
+		data=d2
+	elif(word in detpron):
+		data=detpron
 	# print(lexeme(word))
 	res=[]
-	if(word in d2):
-		data=d2
-	if(word in detpron):
-		data=detpron
 	for wd in data:
 		# print(wd)
 		if(wd.lower() not in words_dic):
@@ -68,11 +72,16 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 			# if()
 			f = phraseFreqFinder("%20".join(trigram))
 			# print(f)
+			if(fl==1):
+				wd=wd[0].upper()+wd[1:]
 			if (f>500 and f>actFreq):
 				res.append((f,wd))
 	return res
 
 def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
+	fl=0
+	if(word[0].isupper()):
+		fl=1
 	word=word.lower()
 	actFreq = phraseFreqFinder("%20".join([word, wordAfter, wordAfterAfter]))
 	s="%20".join([word, wordAfter, wordAfterAfter])
@@ -88,15 +97,15 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 	# print(word)
 	if("VB"  in t or "NN" in t):
 		data=data+lexeme(word)
-	if(is_verb(word)):
+	elif(is_verb(word)):
 		data=data+lexeme(word)
 		
+	elif(word in d2):
+		data=d2
+	elif(word in detpron):
+		data=detpron
 	# print(lexeme(word))
 	res=[]
-	if(word in d2):
-		data=d2
-	if(word in detpron):
-		data=detpron
 	for wd in data:
 		# print(wd)
 		if(wd.lower() not in words_dic):
@@ -120,6 +129,8 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 					continue
 			# print(trigram)
 			f = phraseFreqFinder("%20".join(trigram))
+			if(fl==1):
+				wd=wd[0].upper()+wd[1:]
 			# print(f)
 			if (f>500 and f>actFreq):
 				res.append((f,wd))
@@ -127,6 +138,9 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 
 
 def getSynonymsEndWord(wordBeforeBefore, wordBefore, word,t):
+	fl=0
+	if(word[0].isupper()):
+		fl=1
 	word=word.lower()
 	if(word is 'a' or word is 'an'):
 		return []
@@ -142,16 +156,16 @@ def getSynonymsEndWord(wordBeforeBefore, wordBefore, word,t):
 	# print(word)
 	if("VB"  in t or "NN" in t):
 		data=data+lexeme(word)
-	if(is_verb(word)):
+	elif(is_verb(word)):
 		data=data+lexeme(word)
 		
+	elif(word in d2):
+		data=d2
+	elif(word in detpron):
+		data=detpron
+	
 	# print(lexeme(word))
 	res=[]
-	if(word in d2):
-		data=d2
-	if(word in detpron):
-		data=detpron
-	res = []
 	for wd in data:
 		if(wd.lower() not in words_dic):
 			# print(words)
@@ -168,6 +182,8 @@ def getSynonymsEndWord(wordBeforeBefore, wordBefore, word,t):
 				trigram.append(wordBefore)# trigram = [trigram wordBefore]
 			trigram.append(wd)
 			f = phraseFreqFinder("%20".join(trigram))
+			if(fl==1):
+				wd=wd[0].upper()+wd[1:]
 			if (f>500 and f>actFreq):
 				res.append((f,wd))
 	return res
@@ -178,7 +194,7 @@ def tag(sentence):
 	return words
 
 def paraphraseable(tag):
-	l = ['JJ','NN','NNS','NNPS','RB','VB','VBD','VBG','VBN','VBP','VBZ','DT','IN']
+	l = ['JJ','NN','NNS','NNPS','NNP','RB','VB','VBD','VBG','VBN','VBP','VBZ','DT','IN']
 	if tag in l:
 		return True
 	else:
