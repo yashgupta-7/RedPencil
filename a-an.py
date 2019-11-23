@@ -19,6 +19,8 @@ arpabet = nltk.corpus.cmudict.dict()
 # for word in ('barbels', 'barbeque', 'barbequed', 'barbequeing', 'barbeques'):
 #     print(arpabet[word])
 
+# print(arpabet['universe'])
+
 filename=sys.argv[1]
 file=open(filename,"r")
 sentence = file.read()
@@ -45,8 +47,9 @@ for i in range(0,len(inpwords)):
 			print("Suggestion: a "+inpwords[i+1])
 		
 
-		# pot.append(i[0:-1].lower())
-		# print(pot)
+	# 	pot.append(i[0:-1].lower())
+	# 	print(pot)
+	# 	print("hlj")
 	# 	for j in pot:
 	# 		if (j not in words) :
 	# 			suggested_words=sorted(edit1(j),key=P,reverse=True)
@@ -59,6 +62,7 @@ for i in range(0,len(inpwords)):
 	# 			# print("suggestions:",sorted(edit1(j),key=P,reverse=True))
 	# 	pot=[]
 	# else:
+	# 	print(i)
 	# 	if(i.isalpha()):
 	# 		pot.append(i.lower())
 
