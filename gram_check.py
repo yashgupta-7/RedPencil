@@ -49,7 +49,7 @@ def quadgram(word,sword,tword,fword):
 			# print(f)
 			if(fl==1):
 				wd=wd[0].upper()+wd[1:]
-			if (f>500 and f>actFreq):
+			if (f>300 and f>actFreq):
 				res.append((f,wd))
 	return res
 
@@ -60,15 +60,16 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 	word=word.lower()
 	# print(word)
 	s="%20".join([wordBefore, word, wordAfter])
-	print(s)
+	# print(s)
 	actFreq = phraseFreqFinder("%20".join([wordBefore, word, wordAfter]))
 	# print(word,)
-	print(actFreq)
+	# print(actFreq)
 	if(actFreq>30000):
 		return []
 	data=[]
 	d2=['a','an','the']
 	detpron=["that","those","this","these"]
+	pre=["in","on","at"]
 	# print(t)
 	# print(word)
 	if("VB"  in t or "NN" in t):
@@ -80,6 +81,8 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 		data=d2
 	elif(word in detpron):
 		data=detpron
+	elif(word in pre):
+		data=pre
 	# print(lexeme(word))
 	res=[]
 	for wd in data:
@@ -97,7 +100,7 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 			trigram.append(wd)# trigram = [trigram wd]
 			if (wordAfter!="" and (wordAfter not in punct)):
 				trigram.append(wordAfter)# trigram = [trigram wordAfter]
-			print(trigram)
+			# print(trigram)
 			if(wd is 'a' or wd is 'an'):
 				if (wordAfter!="" and (wordAfter not in punct)):
 					if(referenced(wordAfter).split()[0] != wd):
@@ -108,7 +111,7 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 			
 			# if()
 			f = phraseFreqFinder("%20".join(trigram))
-			print(f)
+			# print(f)
 			if(fl==1):
 				wd=wd[0].upper()+wd[1:]
 			if (f>300 and f>actFreq):
@@ -130,6 +133,7 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 	data=[]
 	d2=['a','an','the']
 	detpron=["that","those","this","these"]
+	pre=["in","on","at"]
 	# print(t)
 	# print(word)
 	if("VB"  in t or "NN" in t):
@@ -141,6 +145,8 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 		data=d2
 	elif(word in detpron):
 		data=detpron
+	elif(word in pre):
+		data=pre
 	# print(lexeme(word))
 	res=[]
 	for wd in data:
@@ -169,7 +175,7 @@ def getSynonymsFirstWord(word, wordAfter, wordAfterAfter,t):
 			if(fl==1):
 				wd=wd[0].upper()+wd[1:]
 			# print(f)
-			if (f>500 and f>actFreq):
+			if (f>300 and f>actFreq):
 				res.append((f,wd))
 	return res
 
@@ -189,6 +195,7 @@ def getSynonymsEndWord(wordBeforeBefore, wordBefore, word,t):
 	data=[]
 	d2=['a','an','the']
 	detpron=["that","those","this","these"]
+	pre=["in","on","at"]
 	# print(t)
 	# print(word)
 	if("VB"  in t or "NN" in t):
@@ -201,6 +208,8 @@ def getSynonymsEndWord(wordBeforeBefore, wordBefore, word,t):
 	elif(word in detpron):
 		data=detpron
 	
+	elif(word in pre):
+		data=pre
 	# print(lexeme(word))
 	res=[]
 	for wd in data:
@@ -266,7 +275,7 @@ for sent in sentences:
 	# sent = sent.replace(",","")
 	words = tag(sent)
 	lS = len(words)
-	print(words)
+	# print(words)
 	for i in range(lS):
 
 		(w,t) = words[i]
