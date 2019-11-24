@@ -8,6 +8,7 @@ import requests
 from pattern.en import *
 import string
 from nltk.corpus import words
+
 words_dic=[i.lower() for i in words.words()]
 punct = string.punctuation
 actFreq = 0
@@ -16,17 +17,51 @@ def is_verb(word):
 		if(tmp.name().split('.')[0] == w and tmp.pos()=='v'):
 			return True
 	return False
+inter_pron=["what","who","whom","whose","which","why"]
+def quadgram(word,sword,tword,fword):
+	fl=0
+	if(word[0].isupper()):
+		fl=1
+	word=word.lower()
+
+	s="%20".join([word,sword,tword,fword])
+	# print(s)
+	actFreq = phraseFreqFinder("20%".join([word,sword,tword,fword]))
+	# print(actFreq)
+	if(actFreq>30000):
+		return []
+	data=["what","who","whom","whose","which"]
+	res=[]
+	for wd in data:
+		qgram = []
+		qgram.append(wd)
+		if(True):
+			if (sword!="" and (sword not in punct)):
+				qgram.append(sword)# trigram = [trigram wordBefore]
+			if (tword!="" and (tword not in punct)):
+				qgram.append(tword)# trigram = [trigram wordAfter]
+			if (fword!="" and (fword not in punct)):
+				qgram.append(fword)# trigram = [trigram wordAfter]
+			f = phraseFreqFinder("%20".join(qgram))
+			# print(qgram,f)
+			# print(f)
+			if(fl==1):
+				wd=wd[0].upper()+wd[1:]
+			if (f>500 and f>actFreq):
+				res.append((f,wd))
+	return res
+
 def getSynonyms(wordBefore, word, wordAfter,t):
 	fl=0
 	if(word[0].isupper()):
 		fl=1
 	word=word.lower()
-	# print(word)
+	print(word)
 	s="%20".join([wordBefore, word, wordAfter])
 	# print(s)
 	actFreq = phraseFreqFinder("%20".join([wordBefore, word, wordAfter]))
 	# print(word,)
-	# print(actFreq)
+	print(actFreq)
 	if(actFreq>30000):
 		return []
 	data=[]
@@ -43,13 +78,13 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 		data=d2
 	elif(word in detpron):
 		data=detpron
-	# print(lexeme(word))
+	print(lexeme(word))
 	res=[]
 	for wd in data:
 		# print(wd)
 		if(wd.lower() not in words_dic):
 			# print(words)
-			# print(wd.lower()+" not present")
+			print(wd.lower()+" not present")
 			continue
 		if(" not" in wd or "\'t" in wd):
 			continue
@@ -233,7 +268,21 @@ for sent in sentences:
 	for i in range(lS):
 
 		(w,t) = words[i]
-
+		if(w.lower() in inter_pron):
+			if(i==len(words)-1):
+				syns=quadgram(w,"","","")
+			elif(i==len(words)-2):
+				syns=quadgram(w,words[i+1][0],"","")
+			elif(i==len(words)-3):
+				syns=quadgram(w,words[i+1][0],words[i+2][0],"")
+			else:
+				syns=quadgram(w,words[i+1][0],words[i+2][0],words[i+3][0])
+			syns.sort(reverse=True)
+				# print(syns)
+			if (len(syns)!=0):
+				print(w,[ x[1] for x in syns ])
+			
+			continue	
 		if (i==0):
 			if (lS>=3):
 				wa = words[i+1][0]
