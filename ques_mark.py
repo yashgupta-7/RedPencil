@@ -93,8 +93,10 @@ classifier = nltk.NaiveBayesClassifier.train(train_set)
 # print(line)
 # print(classifier.classify(dialogue_act_features(line)))
 l=[]
-sentences =re.split('(?<=[.!?]) *',input())
-# print(sentences)
+# sentences =re.split('(?<=[.!?]) *',input())
+sentences =re.split(' *[.!?]+ *',input())
+
+print(sentences)
 for sent in sentences:
 	if(sent==""):
 		continue
