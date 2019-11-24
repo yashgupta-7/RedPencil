@@ -7,9 +7,11 @@ import urllib.request as urllib2
 import requests
 from pattern.en import *
 import string
-from nltk.corpus import words
+# from nltk.corpus import words
+file=open("google-10000-english.txt","r")
+words_dic=file.read().split()
 
-words_dic=[i.lower() for i in words.words()]
+# words_dic=[i.lower() for i in words.words()]
 punct = string.punctuation
 actFreq = 0
 def is_verb(word):
@@ -56,9 +58,9 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 	if(word[0].isupper()):
 		fl=1
 	word=word.lower()
-	print(word)
+	# print(word)
 	s="%20".join([wordBefore, word, wordAfter])
-	# print(s)
+	print(s)
 	actFreq = phraseFreqFinder("%20".join([wordBefore, word, wordAfter]))
 	# print(word,)
 	print(actFreq)
@@ -78,12 +80,12 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 		data=d2
 	elif(word in detpron):
 		data=detpron
-	print(lexeme(word))
+	# print(lexeme(word))
 	res=[]
 	for wd in data:
 		# print(wd)
 		if(wd.lower() not in words_dic):
-			# print(words)
+			print(words)
 			print(wd.lower()+" not present")
 			continue
 		if(" not" in wd or "\'t" in wd):
@@ -95,7 +97,7 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 			trigram.append(wd)# trigram = [trigram wd]
 			if (wordAfter!="" and (wordAfter not in punct)):
 				trigram.append(wordAfter)# trigram = [trigram wordAfter]
-			# print(trigram)
+			print(trigram)
 			if(wd is 'a' or wd is 'an'):
 				if (wordAfter!="" and (wordAfter not in punct)):
 					if(referenced(wordAfter).split()[0] != wd):
@@ -106,10 +108,10 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 			
 			# if()
 			f = phraseFreqFinder("%20".join(trigram))
-			# print(f)
+			print(f)
 			if(fl==1):
 				wd=wd[0].upper()+wd[1:]
-			if (f>500 and f>actFreq):
+			if (f>300 and f>actFreq):
 				res.append((f,wd))
 	return res
 
@@ -264,7 +266,7 @@ for sent in sentences:
 	# sent = sent.replace(",","")
 	words = tag(sent)
 	lS = len(words)
-	# print(words)
+	print(words)
 	for i in range(lS):
 
 		(w,t) = words[i]
