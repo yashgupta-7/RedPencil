@@ -1,0 +1,38 @@
+red 
+blue 
+green
+Red
+Orange
+Yellow
+Green
+Blue
+Purple
+Rainbow
+Tricolor
+Lime
+Goldenrod
+Violet
+Lavender
+Fuchsia
+Cerise
+Pink
+Black
+Brown
+White
+Polka-Dotted
+Grey
+Mauve
+Teal
+Chartreuse
+Bicolor
+Scarlet
+Blonde
+Evergreen
+Light Blue
+Light Green
+Dark Blue
+Dark Green
+Cerulean
+Cyan
+Dotted
+blonde

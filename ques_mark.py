@@ -9,7 +9,9 @@ from nltk.corpus import words
 import re
 # nltk.download('nps_chat')
 posts = nltk.corpus.nps_chat.xml_posts()[:100000]
+# file=open("google-10000-english.txt","r")
 words_dic=words.words()
+# words_dic=file.read().split()
 punct = string.punctuation
 start_words=["who","why","can","is","was","were","do","are","whom","whose"]
 def tag(sentence):
@@ -96,7 +98,7 @@ l=[]
 # sentences =re.split('(?<=[.!?]) *',input())
 sentences =re.split(' *[.!?]+ *',input())
 
-print(sentences)
+# print(sentences)
 for sent in sentences:
 	if(sent==""):
 		continue
@@ -120,7 +122,7 @@ for sent in sentences:
 		print(".",end=" ")
 # print(l)
 print()
-# print("favour" in words_dic)
+# print("kills" in words_dic)
 # print("A" in words_dic)
 # caps=[]
 # for w in words_dic:

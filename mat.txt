@@ -1,0 +1,14 @@
+gold 
+copper
+silk 
+silver 
+Cotton 
+leather 
+polyester 
+wool 
+silk
+velvet 
+nylon
+Wooden 
+diamond 
+plastic

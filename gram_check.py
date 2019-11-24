@@ -88,7 +88,7 @@ def getSynonyms(wordBefore, word, wordAfter,t):
 	for wd in data:
 		# print(wd)
 		if(wd.lower() not in words_dic):
-			print(words)
+			# print(words)
 			print(wd.lower()+" not present")
 			continue
 		if(" not" in wd or "\'t" in wd):
@@ -293,7 +293,7 @@ for sent in sentences:
 			if (len(syns)!=0):
 				print(w,[ x[1] for x in syns ])
 			
-			continue	
+		continue	
 		if (i==0):
 			if (lS>=3):
 				wa = words[i+1][0]
