@@ -13,8 +13,8 @@ Proof Reading Rewriter
 
 ## FRONT END
 * How to Run:
-  source env/bin/activate
-  python3 pyth/manage.py runserver
-  Open localhost on google-chrome and enjoy
+ ** source env/bin/activate
+ ** python3 pyth/manage.py runserver
+ ** Open localhost on google-chrome and enjoy
   
 
