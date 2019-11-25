@@ -84,7 +84,8 @@ def getSynonyms(wordBefore, data, wordAfter):
 			if (wordAfter!="" and (wordAfter not in punct)):
 				trigram.append(wordAfter)# trigram = [trigram wordAfter]
 			f = phraseFreqFinder("%20".join(trigram))
-			if (f>1000):
+			# print(f)
+			if (f>200):
 				res.append((f,wd))
 	return res
 
@@ -100,7 +101,7 @@ def getSynonymsFirstWord(data, wordAfter, wordAfterAfter):
 			if (wordAfterAfter!="" and (wordAfterAfter not in punct)):
 				trigram.append(wordAfterAfter)# trigram = [trigram wordAfter]
 			f = phraseFreqFinder("%20".join(trigram))
-			if (f>1000):
+			if (f>200):
 				res.append((f,wd))
 	return res
 
@@ -117,7 +118,7 @@ def getSynonymsEndWord(wordBeforeBefore, wordBefore, data):
 				trigram.append(wordBefore)# trigram = [trigram wordBefore]
 			trigram.append(wd)
 			f = phraseFreqFinder("%20".join(trigram))
-			if (f>1000):
+			if (f>200):
 				res.append((f,wd))
 	return res
 
