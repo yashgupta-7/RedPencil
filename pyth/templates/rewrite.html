@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!-- <div  height="100px" width="100px" style="border:thin"> -->
+<textarea  id="source" placeholder="Text Entry." rows="8" cols="100">
+This is a color of red and blue and green and red and blue orange.
+</textarea>
+<!-- </div> -->
+<br>
+<div id="result" style="border: thin solid black;height:80px;width:800px;" >
+<!-- <textarea placeholder="Text Entry." disabled="disabled" rows="8" cols="100"> -->
+    
+<!-- </textarea> -->
+</div>
+<!-- <p><span style="color:red">HI</span></p> -->
+<script>
+    if ( document.addEventListener ) {
+    this.addEvent = function(elem, type, fn) {
+        elem.addEventListener(type, fn, false);
+        return fn;
+    };
+
+    this.removeEvent = function(elem, type, fn) {
+        elem.removeEventListener(type, fn, false);
+    };
+    } else if ( document.attachEvent ) {
+    this.addEvent = function(elem, type, fn) {
+        var bound = function() {
+            return fn.apply(elem, arguments);
+        };
+        elem.attachEvent("on" + type, bound);
+        return bound;
+    };
+
+    this.removeEvent = function (elem, type, fn) {
+        elem.detachEvent("on" + type, fn);
+    };
+    }
+
+    addEvent(document.getElementById("source"),"keydown",function(e){ // event will occur on keyup
+    if(e.keyCode == 190){
+        console.log(document.getElementById("source").value);
+
+        var highlight=[
+        {word:"red",color:"red"}, //maybe we can use className
+        {word:"blue",color:"blue"},
+        {word:"green",color:"green"},
+        {word:"orange",color:"orange"},
+        ];
+
+        var text = document.getElementById("source");
+        var la = text.value.split(".");
+        var str = la[la.length-1];
+        // var str = text.value;
+        console.log(str);
+        for(var i=0;i<highlight.length;i++){
+            var regexp=new RegExp('\\b'+highlight[i].word+'\\b',"g"); //
+            console.log(regexp);
+            str=str.replace(regexp,'<button><span style="color:'+highlight[i].color+'">'+highlight[i].word+'</span></button>');
+        }
+            console.log(str);
+            document.getElementById("result").innerHTML += str;
+        }
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+
+    function analyzeText(text){
+        // var text = document.getElementById('text-to-analyze').value;
+
+        $.ajax({
+            type: "POST",
+            url: '{{ 'my-ajax-test/' }}',
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}', text: text },  
+            success: function callback(response){
+                       /* do whatever with the response */
+                       alert(response);
+                    }
+        });
+    }
+</script>
+</body>
+</html>

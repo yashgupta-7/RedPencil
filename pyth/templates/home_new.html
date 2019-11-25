@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+	button {
+	  text-decoration:underline;
+	  background-color: Transparent;
+	  font-size: 30px;
+	  outline:none;
+	  overflow: hidden;
+	  border: none;
+	}
+	textarea { 
+		font-size: 30px; 
+	}
+	</style>
+
+	<center> <h1> Proof Reading Writer </h1> </center>
+</head>
+<body style="background-color:grey;">
+<font size="6">
+	<center><textarea  id="source" rows="8" cols="70"></textarea></center>
+	</textarea><br>
+	<p id="result" style="border: thin solid black;height:80px;width:100%;background-color: #F5DEB3;" ></p>
+	<table id="table">
+	</table>
+</font>
+</body>
+<!-- <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+	if ( document.addEventListener ) {
+    this.addEvent = function(elem, type, fn) {
+        elem.addEventListener(type, fn, false);
+        return fn;
+    };
+
+    this.removeEvent = function(elem, type, fn) {
+        elem.removeEventListener(type, fn, false);
+    };
+    } else if ( document.attachEvent ) {
+    this.addEvent = function(elem, type, fn) {
+        var bound = function() {
+            return fn.apply(elem, arguments);
+        };
+        elem.attachEvent("on" + type, bound);
+        return bound;
+    };
+
+    this.removeEvent = function (elem, type, fn) {
+        elem.detachEvent("on" + type, fn);
+    };
+    }
+
+	addEvent(document.getElementById("source"),"keydown",function(e){ // event will occur on keyup
+    if(e.keyCode == 190 || e.keyCode == 191 || e.keyCode == 49){
+    var input = $('#source').val();
+    var sns = input.split(/[.?!]/);
+    input = sns[sent_no];
+    gs[sent_no] = [input,0,0,0];
+    sent_no++;
+    sgst.push({});
+
+    $.ajaxSetup({async: false});
+    $.ajax({
+        url: '{% url 'get_response' %}',
+        // async: false,
+        data: {
+          'inputValue': input,
+          'state' : 0
+        },
+        dataType: 'html',
+        success: function (data) {
+          // console.log(data);
+          var data = $.parseJSON(data);
+          // console.log(data);
+          var text = input;//.replace(/[\W_]+/g," ");
+          var words = text.split(' ');
+          // console.log(words);
+          var res = "";
+          var x = 0;
+          for(var i=0;i<words.length;i++){
+            var w = words[i]; //
+            if (w=="") continue;
+            console.log(w);
+            // console.log(data[w]);
+            try{
+            if (data[w].length!=0){
+            x++;
+            var col = data[w][0];
+            dic[w]=w;
+            res+=' <button id="'+w+'" onclick="onclick1(\'' + w + '\',\'' + (sent_no-1) + '\');" style="color:'+col+'">'+w+'</button>';
+            sgst[sent_no-1][w] = data[w].slice(1,);
+            // console.log(sgst[w]);
+        	}
+        	else{
+                dic[w] = w;
+        		res+=' <button id="'+w+'" onclick="onclick1(\'' + w + '\',\'' + (sent_no-1) + '\');" style="color:'+'black'+'">'+w+'</button>';
+                sgst[sent_no-1][w]=[];
+        	}
+        	}
+        	catch(err){
+        		res+=" "+w;
+        	}
+          }
+          if(x==0 && gs[sent_no-1][1]<3){
+            gs[sent_no-1][1]++;
+            onclick3(sent_no-1);
+          }
+          // console.log(sent_no-1);
+          console.log('res');
+          console.log(res);
+          gs[sent_no-1][2] = x;
+            // console.log(str);
+            if(e.keyCode==190){
+            document.getElementById("result").innerHTML += (res+'.');}
+            else if (e.keyCode==191){
+            document.getElementById("result").innerHTML += (res+'?');
+            }
+            else{
+            document.getElementById("result").innerHTML += (res+'!');
+            }
+          }
+
+      });
+    $.ajaxSetup({async: true});
+	}
+    });
+
+</script>
+
+<script>
+	var wn = 0;
+
+	function onclick1(word5,sno){
+		var tableRef = document.getElementById("table");
+		tableRef.innerHTML="";
+		console.log(word5);
+		var sug = sgst[sno][word5];
+		console.log(sug);
+		for (var i=0;i<sug.length;i++) {
+  			var newRow = tableRef.insertRow(-1);
+			var snor  = newRow.insertCell(0);
+			var sn = tableRef.rows[ tableRef.rows.length - 1 ];
+			// var st = "<button onclick='onclick2('"+word5+"','"+sug[i]+"');'>"+sug[i]+"</button>";
+			var st = '<button onclick="onclick2(\'' + word5 + '\',\'' + sno + '\',\'' + sug[i] + '\');">' + sug[i] + '</button>';
+			sn.innerHTML = st.toString();	
+			console.log(sn.innerHTML);
+		}
+	}
+
+	function onclick2(wd,sno,sg){
+        gs[sno][3]++;
+		console.log(wd);
+		console.log(sg);
+		var s = document.getElementById(dic[wd]);
+		s.innerHTML = sg;
+        dic[sg]=wd;
+        if (gs[sno][3]==gs[sno][2]){
+            gs[sno][3]=0;
+            gs[sno][2]=0;
+            gs[sno][1]++;
+            onclick3(sno);
+        }
+	}
+
+    function onclick3(sno){
+
+        var raw = gs[sno][0];
+        console.log('raw');
+        console.log(raw);
+        var words = raw.split(' ');
+        console.log(words);
+        var input = "";
+        for(var w=0;w<words.length;w++){
+            try{
+                console.log(words[w]);
+                console.log(document.getElementById(words[w]).innerHTML);
+                input += " " + document.getElementById(words[w]).innerHTML;
+            }
+            catch{
+            //     input += " " + words[w];
+            }
+        }
+
+        console.log(input);
+
+        $.ajaxSetup({async: false});
+
+        $.ajax({
+        url: '{% url 'get_response' %}',
+        // async: false,
+        data: {
+          'inputValue': input,
+          'state': gs[sno][1]
+        },
+        dataType: 'html',
+        success: function (data) {
+        var data = $.parseJSON(data);
+          console.log(data);
+          var text = input;//.replace(/[\W_]+/g," ");
+          var words = text.split(' ');
+          console.log(words);
+          var res = "";
+          var x = 0;
+          sgst[sno]={};
+            for(var i=0;i<words.length;i++){
+            var w = words[i]; //
+            if (w=="") continue;
+            console.log(w);
+            // console.log(data[w]);
+            try{
+            if (data[w].length!=0){
+            x++;
+            var col = data[w][0];
+            // dic[w]=w;
+            document.getElementById(dic[w]).style.color=col;
+            // res+=' <button id="'+w+'" onclick="onclick1(\'' + w + '\',\'' + sent_no + '\');"><span style="color:'+col+'">'+w+'</span></button>';
+            console.log("hi");
+            console.log(data[w]);
+            console.log(dic[w]);
+            sgst[sno][dic[w]] = data[w].slice(1,);
+            // console.log(sgst[w]);
+            }
+            else{
+                console.log("bye");
+                console.log(dic[w]);
+                document.getElementById(dic[w]).style.color='black';
+                sgst[sno][dic[w]]=[];    
+                // res+=" "+w;
+            }
+            }
+            catch(err){
+                // res+=" "+w;
+            }
+          }
+          gs[sno][2] = x;
+          if(x==0 && gs[sno][1]<3){
+            gs[sno][1]++;
+            onclick3(sno);
+          }
+          
+            // console.log(str);
+            // if(e.keyCode==190){
+            // // document.getElementById("result").innerHTML += (res+'.');
+            // }
+            // else if (e.keyCode==191){
+            // // document.getElementById("result").innerHTML += (res+'?');
+            // }
+            // else{
+            // // document.getElementById("result").innerHTML += (res+'!');
+            // }
+
+            }
+
+      });
+    $.ajaxSetup({async: true});
+    }
+          
+
+
+</script>
+
+<script>
+	var sgst = [];
+	var sent_no = 0;
+	var gs = {};
+    var dic={};
+</script>
+</html>

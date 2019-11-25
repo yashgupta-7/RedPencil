@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<textarea  id="user-input" placeholder="Text Entry." rows="8" cols="100">
+		This is a color of red and blue and green and red and blue orange.
+	</textarea><br>
+	<!-- <input type="text" id="user-input" autofocus=""><br> -->
+	<button type="button" id="sender">Send data</button><br>
+	<div id="result" style="border: thin solid black;height:80px;width:800px;" ></div>
+	<!-- <p id="p-text">foo bar</p> -->
+</body>
+
+
+<!-- <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+$("#sender").click(function () {
+    var input = $('#user-input').val();
+
+    $.ajax({
+        url: '{% url 'get_response' %}',
+        data: {
+          'inputValue': input
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          document.getElementById('result').innerHTML = data["respond"];
+        }
+      });
+    });
+
+</script>
+</html>

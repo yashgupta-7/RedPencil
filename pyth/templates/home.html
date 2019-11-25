@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+	button {
+	  /*height: 50px;*/
+	  /*width: 50px;*/
+	  /*background-color: #4CAF50; /* Green */
+	  text-decoration:underline;
+	  background-color: Transparent;
+	  /*display: inline-block;*/
+	  font-size: 30px;
+	  outline:none;
+	  overflow: hidden;
+	  border: none;
+	}
+	textarea { 
+		font-size: 30px; 
+	}
+	</style>
+
+	<center> <h1> Proof Reading Writer </h1> </center>
+</head>
+<body style="background-color:grey;">
+<font size="6">
+	<center><textarea  id="source" rows="8" cols="70"></textarea></center>
+	</textarea><br>
+	<p id="result" style="border: thin solid black;height:80px;width:100%;background-color: #F5DEB3;" ></p>
+	<table id="table">
+	</table>
+</font>
+</body>
+
+
+<!-- <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+	if ( document.addEventListener ) {
+    this.addEvent = function(elem, type, fn) {
+        elem.addEventListener(type, fn, false);
+        return fn;
+    };
+
+    this.removeEvent = function(elem, type, fn) {
+        elem.removeEventListener(type, fn, false);
+    };
+    } else if ( document.attachEvent ) {
+    this.addEvent = function(elem, type, fn) {
+        var bound = function() {
+            return fn.apply(elem, arguments);
+        };
+        elem.attachEvent("on" + type, bound);
+        return bound;
+    };
+
+    this.removeEvent = function (elem, type, fn) {
+        elem.detachEvent("on" + type, fn);
+    };
+    }
+
+	addEvent(document.getElementById("source"),"keydown",function(e){ // event will occur on keyup
+    if(e.keyCode == 190 || e.keyCode == 191 || e.keyCode == 49){
+    var input = $('#source').val();
+    var sns = input.split(/[.?!]/);
+    input = sns[sent_no];
+    sent_no++;
+
+    $.ajaxSetup({async: false});
+    $.ajax({
+        url: '{% url 'get_response' %}',
+        // async: false,
+        data: {
+          'inputValue': input
+        },
+        dataType: 'html',
+        success: function (data) {
+          // console.log(data);
+          var data = $.parseJSON(data);
+          console.log(data);
+          var text = input;//.replace(/[\W_]+/g," ");
+          var words = text.split(' ');
+          console.log(words);
+          var res = "";
+          for(var i=0;i<words.length;i++){
+            var w = words[i]; //
+            if (w=="") continue;
+            console.log(w);
+            // console.log(data[w]);
+            try{
+            if (data[w].length!=0){
+            var col = data[w][0];
+            res+=' <button id="'+w+'" onclick="onclick1(this.id)"><span style="color:'+col+'">'+w+'</span></button>';
+            sgst[w] = data[w].slice(1,);
+            // console.log(sgst[w]);
+        	}
+        	else{
+        		res+=" "+w;
+        	}
+        	}
+        	catch(err){
+        		res+=" "+w;
+        	}
+          }
+            // console.log(str);
+            if(e.keyCode==190){
+            document.getElementById("result").innerHTML += (res+'.');}
+            else if (e.keyCode==191){
+            document.getElementById("result").innerHTML += (res+'?');
+            }
+            else{
+            document.getElementById("result").innerHTML += (res+'!');
+            }
+          }
+
+      });
+    $.ajaxSetup({async: true});
+	}
+    });
+
+</script>
+
+<script>
+	var wn = 0;
+
+	function onclick1(word5){
+		var tableRef = document.getElementById("table");
+		tableRef.innerHTML="";
+		console.log(word5);
+		var sug = sgst[word5];
+		console.log(sug);
+		for (var i=0;i<sug.length;i++) {
+  			var newRow = tableRef.insertRow(-1);
+			var sno  = newRow.insertCell(0);
+			var sn = tableRef.rows[ tableRef.rows.length - 1 ];
+			// var st = "<button onclick='onclick2('"+word5+"','"+sug[i]+"');'>"+sug[i]+"</button>";
+			var st = '<button onclick="onclick2(\'' + word5 + '\',\'' + sug[i] + '\');">' + sug[i] + '</button>';
+			sn.innerHTML = st.toString();	
+			console.log(sn.innerHTML);
+		}
+	}
+
+	function onclick2(wd,sg){
+		console.log(wd);
+		console.log(sg);
+		var s = document.getElementById(wd);
+		s.innerHTML = sg;
+	}
+
+</script>
+
+<script>
+	var sgst = {};
+	var sent_no = 0;
+	var gs;
+</script>
+</html>
