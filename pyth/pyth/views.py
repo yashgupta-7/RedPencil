@@ -37,7 +37,7 @@ def answer_me(request):
     	answer0 = pyth.spell.outp(field)
     	for k in answer0.keys():
     		if (len(answer0[k])!=0):
-	    		answer[k] = ["red"]
+	    		answer[k] = ["red",k]
 	    		answer[k] += answer0[k]
 	    	else:
     			answer[k] = []
@@ -47,7 +47,7 @@ def answer_me(request):
     	answer1 = pyth.gram_check.outp(field)
     	for k in answer1.keys():
     		if (len(answer1[k])!=0):
-    			answer[k] = ["blue"]
+    			answer[k] = ["blue",k]
     			answer[k] += answer1[k]
     		else:
     			answer[k] = []
@@ -56,7 +56,7 @@ def answer_me(request):
     	answer3 = pyth.empty.outp(field)
     	for k in answer3.keys():
     		if (len(answer3[k])!=0):
-    			answer[k] = ["blue"]
+    			answer[k] = ["blue",k]
     			answer[k] += answer3[k]
     		else:
     			answer[k] = []
