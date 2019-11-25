@@ -26,12 +26,16 @@ def capitalise(sent):
 	lS = len(words)
 	ans=[]
 	fl=0
+	ex=["wow","oops","oh","bravo","gosh","eureka",]
 	# for 
 	for i in range(lS):
 		(w,t)=words[i]
+		# print(w.lower)
 		if(t=='UH'):
 			fl=1
 			# print("excl")
+		if(w.lower() in ex):
+			fl=1
 		if(i==0):
 			w=w.lower()
 			w=w[0].upper()+w[1:]
