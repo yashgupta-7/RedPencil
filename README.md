@@ -11,10 +11,9 @@ Proof Reading Rewriter
 * CONTEXTUAL SPELL CHECK: python3 spell.py (takes text as input from console and gives contextual suggestions for spellings of words in the text)
 * REWRITNG TOOL: python3 syn.py (takes text as input from console and gives contextual suggestions for rewritng)
 
-## FRONT END
-* How to Run:
- ** source env/bin/activate
- ** python3 pyth/manage.py runserver
- ** Open localhost on google-chrome and enjoy
+## FRONT END: HOW TO RUN
+ * source env/bin/activate
+ * python3 pyth/manage.py runserver
+ * Open localhost on google-chrome and enjoy
   
 
