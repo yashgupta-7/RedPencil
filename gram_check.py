@@ -28,7 +28,7 @@ def quadgram(word,sword,tword,fword):
 
 	s="%20".join([word,sword,tword,fword])
 	# print(s)
-	actFreq = phraseFreqFinder("20%".join([word,sword,tword,fword]))
+	actFreq = phraseFreqFinder("%20".join([word,sword,tword,fword]))
 	# print(actFreq)
 	if(actFreq>30000):
 		return []
